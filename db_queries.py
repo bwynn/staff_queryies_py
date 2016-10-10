@@ -27,6 +27,7 @@ def get_staff_member(name):
     else:
         output = "No such name"
     return jsonify({'result': output})
+# http://localhost:5000/staff_member/Brian <== eg.
 
 @app.route('/staff/<string:title>', methods=['GET'])
 def get_staff_by_title(title):
@@ -35,7 +36,7 @@ def get_staff_by_title(title):
     for s in staff.find({'title': title}):
         output.append({'name': s['name'], 'title': s['title'], 'id': s['id']})
     return jsonify({'result': output})
-# http://localhost:5000/staff/QA%20Lead <== Url for blank space 
+# http://localhost:5000/staff/QA%20Lead <== Url for blank space
 
 @app.route('/staff_member/', methods=['POST'])
 def add_staff_member():
@@ -47,6 +48,7 @@ def add_staff_member():
     new_staff_member = staff.find_one({'id': member_id})
     output = {'name': new_staff_member['name'], 'title': new_staff_member['title'], 'id': new_staff_member['id']}
     return jsonify({'result': output})
+# request body as JSON -> {"name": "Brian", "id": 1, "title": "QA Test Lead"}
 
 if __name__ == '__main__':
     app.run(debug=True)
