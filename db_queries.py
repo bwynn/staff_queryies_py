@@ -38,6 +38,27 @@ def get_staff_by_title(title):
     return jsonify({'result': output})
 # http://localhost:5000/staff/QA%20Lead <== Url for blank space
 
+@app.route('/staff_member_id/<string:staff_id>', methods=['GET'])
+def get_staff_by_id(staff_id):
+    staff = mongo.db.staff
+    output = []
+    s = staff.find_one({'id': staff_id})
+    if s:
+        output = {'name': s['name'], 'title': s['title'], 'id': s['id']}
+    else:
+        output = "ID not found"
+    return jsonify({'result': output})
+# http://localhost:5000/staff/1 <== eg.
+
+@app.route('/get_original_staff_members', methods=['GET'])
+def get_og_staff_members():
+    staff = mongo.db.staff
+    output = []
+    for s in staff.find({'id': {'$lte': '5'}}):
+        output.append({'name': s['name'], 'title': s['title'], 'id': s['id']})
+    return jsonify({'result': output})
+# http://localhost:5000/get_original_staff_members
+
 @app.route('/staff_member/', methods=['POST'])
 def add_staff_member():
     staff = mongo.db.staff
